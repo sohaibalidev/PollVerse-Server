@@ -1,0 +1,33 @@
+{
+  "name": "pollverse-server",
+  "version": "1.0.0",
+  "description": "pollverse backend server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "upload": "git diff --quiet && git diff --cached --quiet && echo 'No changes to commit' || (git add . && git commit -m \"auto-update\" && git push origin main)",
+    "download": "git fetch origin && git reset --hard origin/main && git clean -fd && echo 'Project updated from GitHub'"
+  },
+  "keywords": [
+    "pollverse",
+    "backend",
+    "server",
+    "nodejs",
+    "express",
+    "mongodb"
+  ],
+  "author": "Muhammad Sohaib Ali",
+  "license": "MIT",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "helmet": "^8.1.0",
+    "mongoose": "^7.8.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
