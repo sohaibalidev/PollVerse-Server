@@ -9,13 +9,13 @@
  *  - Centralized 404 & error handling
  */
 
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const cookieParser = require("cookie-parser");
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const cookieParser = require('cookie-parser');
 
-const appConfig = require("./config/app.config");
-const indexRoutes = require("./routes/index.routes");
+const appConfig = require('./config/app.config');
+const pollRoutes = require('./routes/poll.routes');
 
 const app = express();
 
@@ -23,15 +23,12 @@ const app = express();
    GLOBAL MIDDLEWARES
    =========================== */
 
-// Body parsing
-app.use(express.json({ limit: "10mb" }));
+app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Cookie parsing
 app.use(cookieParser());
 
-// Security headers (enabled in non-dev environments)
-if (appConfig.NODE_ENV !== "development") {
+if (appConfig.NODE_ENV !== 'development') {
   app.use(
     helmet({
       crossOriginResourcePolicy: false,
@@ -39,7 +36,6 @@ if (appConfig.NODE_ENV !== "development") {
   );
 }
 
-// CORS configuration
 app.use(
   cors({
     origin: appConfig.FRONTEND_URL,
@@ -47,31 +43,25 @@ app.use(
   })
 );
 
-// Simple request logger
-// app.use((req, res, next) => {
-//   console.log(`${new Date().toISOString()} ${req.method} ${req.path}`);
-//   next();
-// });
-
 /* ===========================
    ROOT & HEALTH ROUTES
    =========================== */
 
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
   res.status(200).json({
-    name: "PollVerse API",
+    name: 'PollVerse API',
     description:
-      "Precision URL shortener built with Node.js, Express, and MongoDB.",
+      'Precision URL shortener built with Node.js, Express, and MongoDB.',
     repositories: {
-      backend: "https://github.com/sohaibalidev/pollverse-server",
-      frontend: "https://github.com/sohaibalidev/pollverse-client",
+      backend: 'https://github.com/sohaibalidev/pollverse-server',
+      frontend: 'https://github.com/sohaibalidev/pollverse-client',
     },
     live: {
-      frontend: "https://pollverse.netlify.app",
-      backend: "https://pollverse-server.onrender.com",
+      frontend: 'https://pollverse.netlify.app',
+      backend: 'https://pollverse-server.onrender.com',
     },
-    author: "Muhammad Sohaib Ali",
-    status: "online",
+    author: 'Muhammad Sohaib Ali',
+    status: 'online',
   });
 });
 
@@ -79,7 +69,7 @@ app.get("/", (req, res) => {
    API ROUTES
    =========================== */
 
-app.use("/api", indexRoutes);
+app.use('/api', pollRoutes);
 
 /* ===========================
    404 HANDLER
@@ -97,13 +87,13 @@ app.use((req, res) => {
    =========================== */
 
 app.use((err, req, res, next) => {
-  if (appConfig.NODE_ENV === "development") console.error("Error:", err);
+  if (appConfig.NODE_ENV === 'development') console.error('Error:', err);
 
-  if (err.name === "ValidationError") {
+  if (err.name === 'ValidationError') {
     const errors = Object.values(err.errors).map((e) => e.message);
     return res
       .status(400)
-      .json({ success: false, message: "Validation Error", errors });
+      .json({ success: false, message: 'Validation Error', errors });
   }
 
   if (err.code === 11000) {
@@ -113,15 +103,15 @@ app.use((err, req, res, next) => {
       .json({ success: false, message: `${field} already exists` });
   }
 
-  if (err.name === "JsonWebTokenError")
-    return res.status(401).json({ success: false, message: "Invalid token" });
+  if (err.name === 'JsonWebTokenError')
+    return res.status(401).json({ success: false, message: 'Invalid token' });
 
-  if (err.name === "TokenExpiredError")
-    return res.status(401).json({ success: false, message: "Token expired" });
+  if (err.name === 'TokenExpiredError')
+    return res.status(401).json({ success: false, message: 'Token expired' });
 
   res.status(err.status || 500).json({
     success: false,
-    message: err.message || "Internal server error",
+    message: err.message || 'Internal server error',
   });
 });
 
