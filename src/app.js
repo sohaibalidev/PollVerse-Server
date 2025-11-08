@@ -49,16 +49,16 @@ app.use(
 
 app.get('/', (req, res) => {
   res.status(200).json({
-    name: 'PollVerse API',
+    name: 'Poll Verse API',
     description:
       'Precision URL shortener built with Node.js, Express, and MongoDB.',
     repositories: {
-      backend: 'https://github.com/sohaibalidev/pollverse-server',
-      frontend: 'https://github.com/sohaibalidev/pollverse-client',
+      backend: 'https://github.com/sohaibalidev/poll-verse-server',
+      frontend: 'https://github.com/sohaibalidev/poll-verse-client',
     },
     live: {
-      frontend: 'https://pollverse.netlify.app',
-      backend: 'https://pollverse-server.onrender.com',
+      frontend: 'https://poll-verse.netlify.app',
+      backend: 'https://poll-verse-server.onrender.com',
     },
     author: 'Muhammad Sohaib Ali',
     status: 'online',

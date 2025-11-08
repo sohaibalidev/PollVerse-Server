@@ -1,7 +1,7 @@
 {
-  "name": "pollverse-server",
+  "name": "poll-verse-server",
   "version": "1.0.0",
-  "description": "pollverse backend server",
+  "description": "poll-verse backend server",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -11,6 +11,7 @@
   },
   "keywords": [
     "pollverse",
+    "poll-verse",
     "backend",
     "server",
     "nodejs",
